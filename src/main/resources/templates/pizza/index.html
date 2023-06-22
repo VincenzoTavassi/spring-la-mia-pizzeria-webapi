@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/resources :: head}">
+</head>
+<title>Lista delle pizze</title>
+<body>
+.<div class="container text-center">
+    <h1>Lista delle pizze disponibili</h1>
+<div th:if="${pizze.size() == 0}">
+<p>Nessuna pizza in lista.</p>
+</div>
+<div th:if="${pizze.size() > 0}">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Immagine</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrizione</th>
+            <th scope="col">Prezzo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="pizza : ${pizze}" class="align-middle">
+            <th scope="row" th:text="${pizza.id}"></th>
+            <td><img th:src="${pizza.pictureUrl}" width="150px"></td>
+            <td th:text="${pizza.name}"></td>
+            <td th:text="${pizza.description}">Otto</td>
+            <td th:text="|€ ${pizza.price}|"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+</body>
+</html>
