@@ -18,6 +18,8 @@
             <th scope="col">Nome</th>
             <th scope="col">Descrizione</th>
             <th scope="col">Prezzo</th>
+            <th scope="col">Azioni</th>
+
         </tr>
         </thead>
         <tbody>
@@ -27,6 +29,7 @@
             <td th:text="${pizza.name}"></td>
             <td th:text="${pizza.description}">Otto</td>
             <td th:text="|€ ${pizza.price}|"></td>
+            <td><a th:href="|/pizza/${pizza.id}|">Dettaglio</a></td>
         </tr>
         </tbody>
     </table>

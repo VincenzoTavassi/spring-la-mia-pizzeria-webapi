@@ -30,7 +30,8 @@ public class PizzaController {
 
     @GetMapping("/pizza/{id}")
     public String show(Model model, @PathVariable Integer id) {
-        Optional<Pizza> pizza = pizzaRepository.findById(id);
+        if (id > pizzaRepository.count() || id <= 0) return "redirect:/";
+        Pizza pizza = pizzaRepository.getReferenceById(id);
         model.addAttribute("pizza", pizza);
         return "pizza/show";
     }

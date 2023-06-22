@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/resources :: head}">
+<title>Dettaglio </title>
 </head>
 <body>
+<div class="container text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Dettaglio della pizza </h1>
+<div class="card my-3" style="width: 30vw">
+    <img th:src="${pizza.pictureUrl}" class="card-img-top" th:alt="${pizza.name}">
+    <div class="card-body">
+        <h5 class="card-title" th:text="${pizza.name}"></h5>
+        <p class="card-text" th:text="${pizza.description}"></p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item" th:text="|€ ${pizza.price}|"></li>
+    </ul>
+    <div class="card-body">
+        <a href="/" class="card-link">Torna alla lista</a>
+    </div>
+</div>
+</div>
 
 </body>
 </html>
