@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{/fragments/resources :: head}">
-<title>Dettaglio </title>
+<head th:insert="~{/fragments/resources :: head(title = ${pizza.getName()})}">
 </head>
 <body>
 <div class="container text-center d-flex flex-column justify-content-center align-items-center">
-    <h1>Dettaglio della pizza </h1>
+    <h1>Dettaglio della pizza [[${pizza.getName()}]]</h1>
 <div class="card my-3" style="width: 30vw">
     <img th:src="${pizza.pictureUrl}" class="card-img-top" th:alt="${pizza.name}">
     <div class="card-body">
