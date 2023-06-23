@@ -38,18 +38,15 @@ public class PizzaController {
 
     @GetMapping("/pizza/{id}")
     public String show(Model model, @PathVariable String id) {
-        Pizza pizza;
+        Pizza pizza = null;
         if(isNumeric(id)) { // Se è numerico, trovo la pizza in base all'ID
             Integer pizzaId = Integer.valueOf(id);
             if (pizzaId > pizzaRepository.count() || pizzaId <= 0) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
             pizza = pizzaRepository.getReferenceById(pizzaId);
-        } else {
-            try { // Altrimenti provo a cercarla in base al nome fornito
-            pizza = pizzaRepository.findByNameIgnoreCase(id);
-            } catch (Exception e) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-                }
-            }
+        } else { // Altrimenti cerco la pizza in base al nome
+            Optional<Pizza> foundPizza = pizzaRepository.findByNameIgnoreCase(id);
+        if (foundPizza.isPresent()) pizza = foundPizza.get();
+        }
         if (pizza == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         model.addAttribute("pizza", pizza);
             return "pizza/show";
