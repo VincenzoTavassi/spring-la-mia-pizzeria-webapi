@@ -45,11 +45,11 @@ public class PizzaController {
             pizza = pizzaRepository.getReferenceById(pizzaId);
         } else { // Altrimenti cerco la pizza in base al nome
             Optional<Pizza> foundPizza = pizzaRepository.findByNameIgnoreCase(id);
-        if (foundPizza.isPresent()) pizza = foundPizza.get();
+            if (foundPizza.isPresent()) pizza = foundPizza.get();
         }
         if (pizza == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         model.addAttribute("pizza", pizza);
-            return "pizza/show";
+        return "pizza/show";
         }
 
     private boolean isNumeric(String string) {
