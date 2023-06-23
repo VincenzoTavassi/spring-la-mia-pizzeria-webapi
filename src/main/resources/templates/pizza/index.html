@@ -5,6 +5,14 @@
 <body>
 .<div class="container text-center">
     <h1>Lista delle pizze disponibili</h1>
+    <hr>
+        <form action="/" method="GET">
+    <div class="input-group mb-3">
+        <input type="text" name="search" th:value="${searchTerm}" class="form-control" placeholder="Cerca una pizza..">
+        <button class="btn btn-outline-secondary" type="submit">Cerca</button>
+    </div>
+        </form>
+    <hr>
 <div th:if="${pizze.size() == 0}">
 <p>Nessuna pizza in lista.</p>
 </div>

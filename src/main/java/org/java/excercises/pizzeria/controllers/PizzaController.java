@@ -5,9 +5,7 @@ import org.java.excercises.pizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +19,15 @@ public class PizzaController {
     private PizzaRepository pizzaRepository;
 
     @GetMapping
-    public String index(Model model) {
-        List<Pizza> pizze = pizzaRepository.findAll();
+    public String index(@RequestParam(name="search", required = false) String searchTerm, Model model) {
+        List<Pizza> pizze;
+        if (searchTerm == null || searchTerm.isBlank()) {
+            pizze = pizzaRepository.findAll();
+        } else {
+            pizze = pizzaRepository.findByNameContainingIgnoreCase(searchTerm);
+        }
         model.addAttribute("pizze", pizze);
+        model.addAttribute("searchTerm", searchTerm == null ? "" : searchTerm);
         return "pizza/index";
 
     }
