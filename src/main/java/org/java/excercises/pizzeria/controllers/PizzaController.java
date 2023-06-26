@@ -5,16 +5,14 @@ import org.java.excercises.pizzeria.models.Pizza;
 import org.java.excercises.pizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,8 +68,11 @@ public class PizzaController {
         // Se il nome della pizza non è unico, aggiungo un errore
         if(!isUniqueName(pizza)) bindingResult.addError(new FieldError("pizza", "name", pizza.getName(), false, null, null, "Il nome della pizza deve essere unico"));
         if(bindingResult.hasErrors()) return "pizza/create";
-        else pizzaRepository.save(pizza);
+        else {
+            pizza.setCreatedAt(LocalDateTime.now());
+        pizzaRepository.save(pizza);
         return "redirect:/";
+        }
     }
 
         // CUSTOM METHODS
@@ -88,4 +89,5 @@ public class PizzaController {
         Optional<Pizza> foundPizza = pizzaRepository.findByNameIgnoreCase(pizza.getName());
         return foundPizza.isEmpty();
     }
+
 }
