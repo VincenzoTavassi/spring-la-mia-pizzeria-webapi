@@ -4,25 +4,37 @@
 <body>
 <div class="container">
     <h1 class="text-center">Inserisci una nuova pizza</h1>
-    <form action="@{pizza/create}" method="POST" th:object="${pizza}" class="row my-3 justify-content-center">
+    <form action="/pizza/create" method="POST" th:object="${pizza}" class="row my-3 justify-content-center">
         <div class="col-3">
             <label for="pizza-name">Nome della Pizza</label>
             <input type="text" class="form-control" id="pizza-name" th:field="*{name}"
                    th:errorClass="is-invalid">
+            <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                <div th:each="error : ${#fields.errors('name')}" th:text="${error}"></div>
+           </div>
         </div>
         <div class="col-4">
             <label for="pizza-picture">URL dell'immagine</label>
             <input type="url" class="form-control" id="pizza-picture" th:field="*{pictureUrl}"
                    th:errorClass="is-invalid">
+            <div th:if="${#fields.hasErrors('pictureUrl')}" class="invalid-feedback">
+                <div th:each="error : ${#fields.errors('pictureUrl')}" th:text="${error}"></div>
+            </div>
         </div>
         <div class="col-3">
             <label for="pizza-price">Prezzo</label>
             <input type="number" step="0.01" class="form-control" id="pizza-price" th:field="*{price}"
                    th:errorClass="is-invalid">
+            <div th:if="${#fields.hasErrors('price')}" class="invalid-feedback">
+                <div th:each="error : ${#fields.errors('price')}" th:text="${error}"></div>
+            </div>
         </div>
         <div class="col-10">
             <label for="pizza-description">Descrizione</label>
             <textarea class="form-control" id="pizza-description" th:field="*{description}" th:errorClass="is-invalid"></textarea>
+            <div th:if="${#fields.hasErrors('description')}" class="invalid-feedback">
+                <div th:each="error : ${#fields.errors('description')}" th:text="${error}"></div>
+            </div>
         </div>
     <div class="d-flex justify-content-center align-items-center my-3">
         <button class="btn btn-outline-secondary me-3" type="submit">Invia</button>
@@ -30,12 +42,5 @@
     </div>
     </form>
 </div>
-
-<!--private String name;-->
-<!--private String description;-->
-<!--private String pictureUrl;-->
-<!--@Column(nullable = false)-->
-<!--private BigDecimal price;-->
-
 </body>
 </html>

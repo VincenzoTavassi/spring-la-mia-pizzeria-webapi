@@ -1,22 +1,29 @@
 package org.java.excercises.pizzeria.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 public class Pizza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String name;
     private String description;
     private String pictureUrl;
+    @NotNull
+    @DecimalMin("0")
     @Column(nullable = false)
 
     private BigDecimal price;
-
     public Integer getId() {
         return id;
     }

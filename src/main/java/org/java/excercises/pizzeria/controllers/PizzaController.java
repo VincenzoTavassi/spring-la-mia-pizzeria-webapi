@@ -1,5 +1,6 @@
 package org.java.excercises.pizzeria.controllers;
 
+import jakarta.validation.Valid;
 import org.java.excercises.pizzeria.models.Pizza;
 import org.java.excercises.pizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
@@ -62,6 +65,14 @@ public class PizzaController {
         return "pizza/create";
     }
 
+    @PostMapping("/pizza/create")
+    public String create(@Valid @ModelAttribute("pizza") Pizza pizza, BindingResult bindingResult) {
+        // Se il nome della pizza non è unico, aggiungo un errore
+        if(!isUniqueName(pizza)) bindingResult.addError(new FieldError("pizza", "name", pizza.getName(), false, null, null, "Il nome della pizza deve essere unico"));
+        if(bindingResult.hasErrors()) return "pizza/create";
+        else pizzaRepository.save(pizza);
+        return "redirect:/";
+    }
 
         // CUSTOM METHODS
     private boolean isNumeric(String string) {
@@ -71,5 +82,10 @@ public class PizzaController {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    private boolean isUniqueName(Pizza pizza) {
+        Optional<Pizza> foundPizza = pizzaRepository.findByNameIgnoreCase(pizza.getName());
+        return foundPizza.isEmpty();
     }
 }
