@@ -22,6 +22,8 @@ public class PizzaController {
     @Autowired
     private PizzaRepository pizzaRepository;
 
+
+    // INDEX
     @GetMapping
     public String index(@RequestParam(name="search", required = false) String searchTerm, Model model) {
         List<Pizza> pizze;
@@ -36,6 +38,7 @@ public class PizzaController {
 
     }
 
+    // SHOW
     @GetMapping("/pizza/{id}")
     public String show(Model model, @PathVariable String id) {
         Pizza pizza = null;
@@ -52,6 +55,15 @@ public class PizzaController {
         return "pizza/show";
         }
 
+        // CREATE / STORE
+    @GetMapping("/pizza/create")
+    public String create(Model model) {
+        model.addAttribute("pizza", new Pizza());
+        return "pizza/create";
+    }
+
+
+        // CUSTOM METHODS
     private boolean isNumeric(String string) {
         try {
             Integer.parseInt(string);
