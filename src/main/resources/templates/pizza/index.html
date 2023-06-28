@@ -45,6 +45,7 @@
             <td th:text="|€ ${pizza.price}|"></td>
             <td><a th:href="|/pizza/${pizza.id}|"><i class="fa-solid fa-eye"></i></a>
             <a th:href="|/pizza/edit/${pizza.id}|"><i class="fa-solid fa-pencil"></i></a>
+                <form class="d-inline-block" th:action="|/pizza/delete/${pizza.id}|" method="POST"><button class="border-0 text-primary bg-transparent" type="submit"><i class="fa-solid fa-trash"></i></button></form>
             </td>
         </tr>
         </tbody>

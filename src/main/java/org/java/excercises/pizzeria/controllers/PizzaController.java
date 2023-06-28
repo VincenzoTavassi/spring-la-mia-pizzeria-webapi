@@ -102,6 +102,14 @@ public class PizzaController {
         }
     }
 
+    @PostMapping("/pizza/delete/{id}")
+    public String delete(@PathVariable("id") Integer id) {
+        Optional<Pizza> foundPizza = pizzaRepository.findById(id);
+        if(foundPizza.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        pizzaRepository.delete(foundPizza.get());
+        return "redirect:/";
+    }
+
         // CUSTOM METHODS
     private boolean isNumeric(String string) {
         try {
