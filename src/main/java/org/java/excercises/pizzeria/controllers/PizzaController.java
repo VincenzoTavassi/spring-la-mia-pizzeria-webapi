@@ -1,6 +1,8 @@
 package org.java.excercises.pizzeria.controllers;
 
 import jakarta.validation.Valid;
+import org.java.excercises.pizzeria.messages.Message;
+import org.java.excercises.pizzeria.messages.MessageType;
 import org.java.excercises.pizzeria.models.Pizza;
 import org.java.excercises.pizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -64,13 +67,18 @@ public class PizzaController {
     }
 
     @PostMapping("/pizza/create")
-    public String create(@Valid @ModelAttribute("pizza") Pizza pizza, BindingResult bindingResult) {
+    public String create(
+            @Valid @ModelAttribute("pizza") Pizza pizza,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
         // Se il nome della pizza non è unico, aggiungo un errore
         if(!isUniqueName(pizza)) bindingResult.addError(new FieldError("pizza", "name", pizza.getName(), false, null, null, "Il nome della pizza deve essere unico"));
         if(bindingResult.hasErrors()) return "pizza/edit";
         else {
             pizza.setCreatedAt(LocalDateTime.now());
         pizzaRepository.save(pizza);
+        redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Pizza creata con successo."));
         return "redirect:/";
         }
     }
@@ -88,7 +96,8 @@ public class PizzaController {
     public String update(
             @PathVariable("id") Integer id,
             @Valid @ModelAttribute("pizza") Pizza formPizza,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
     ) {
         Optional<Pizza> foundPizza = pizzaRepository.findById(id);
         if(foundPizza.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -98,15 +107,17 @@ public class PizzaController {
         else {
             formPizza.setCreatedAt(foundPizza.get().getCreatedAt());
             pizzaRepository.save(formPizza);
+            redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Pizza modificata con successo."));
             return "redirect:/";
         }
     }
 
     @PostMapping("/pizza/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         Optional<Pizza> foundPizza = pizzaRepository.findById(id);
         if(foundPizza.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         pizzaRepository.delete(foundPizza.get());
+        redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Pizza eliminata con successo."));
         return "redirect:/";
     }
 
