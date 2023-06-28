@@ -60,18 +60,45 @@ public class PizzaController {
     @GetMapping("/pizza/create")
     public String create(Model model) {
         model.addAttribute("pizza", new Pizza());
-        return "pizza/create";
+        return "pizza/edit";
     }
 
     @PostMapping("/pizza/create")
     public String create(@Valid @ModelAttribute("pizza") Pizza pizza, BindingResult bindingResult) {
         // Se il nome della pizza non è unico, aggiungo un errore
         if(!isUniqueName(pizza)) bindingResult.addError(new FieldError("pizza", "name", pizza.getName(), false, null, null, "Il nome della pizza deve essere unico"));
-        if(bindingResult.hasErrors()) return "pizza/create";
+        if(bindingResult.hasErrors()) return "pizza/edit";
         else {
             pizza.setCreatedAt(LocalDateTime.now());
         pizzaRepository.save(pizza);
         return "redirect:/";
+        }
+    }
+
+    // EDIT
+    @GetMapping("/pizza/edit/{id}")
+    public String edit(@PathVariable("id") Integer id, Model model) {
+        Optional<Pizza> foundPizza = pizzaRepository.findById(id);
+        if(foundPizza.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        model.addAttribute("pizza", foundPizza.get());
+        return "pizza/edit";
+    }
+
+    @PostMapping("/pizza/edit/{id}")
+    public String update(
+            @PathVariable("id") Integer id,
+            @Valid @ModelAttribute("pizza") Pizza formPizza,
+            BindingResult bindingResult
+    ) {
+        Optional<Pizza> foundPizza = pizzaRepository.findById(id);
+        if(foundPizza.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        // Se il nome della pizza non è uguale a quello già presente e non è unico, aggiungo un errore
+        if(!formPizza.getName().equalsIgnoreCase(foundPizza.get().getName()) && !isUniqueName(formPizza)) bindingResult.addError(new FieldError("pizza", "name", formPizza.getName(), false, null, null, "Il nome della pizza deve essere unico"));
+        if(bindingResult.hasErrors()) return "pizza/edit";
+        else {
+            formPizza.setCreatedAt(foundPizza.get().getCreatedAt());
+            pizzaRepository.save(formPizza);
+            return "redirect:/";
         }
     }
 
