@@ -18,6 +18,24 @@
         <a href="/" class="card-link">Torna alla lista</a>
     </div>
 </div>
+    <table class="table" th:if="${pizza.offers.size() > 0}">
+        <thead>
+        <tr>
+            <th>Nome Offerta</th>
+            <th>Data di inizio</th>
+            <th>Data di fine</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="offer : ${pizza.offers}" th:object="${offer}">
+            <td th:text="*{title}"></td>
+            <td th:text="*{#temporals.format(startDate, 'dd/MM/yyyy')}"></td>
+            <td th:text="*{#temporals.format(endDate, 'dd/MM/yyyy')}"></td>
+
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 </body>

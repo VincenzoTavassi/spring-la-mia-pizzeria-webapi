@@ -78,8 +78,14 @@ public class Pizza {
         this.price = price;
     }
 
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
     public String getFormattedCreatedAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'alle' HH:mm");
         return createdAt.format(formatter);
+
+
     }
 }
