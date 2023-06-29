@@ -23,7 +23,7 @@
     </div>
     <div class="col-3">
       <label for="offer-start">Data di inizio</label>
-      <input type="date" class="form-control" id="offer-start" th:field="*{startDate}"
+      <input type="date" class="form-control" id="offer-start" name="startDate" th:value="${offer.startDate}"
              th:errorClass="is-invalid">
       <div th:if="${#fields.hasErrors('startDate')}" class="invalid-feedback">
         <div th:each="error : ${#fields.errors('startDate')}" th:text="${error}"></div>
@@ -31,7 +31,7 @@
     </div>
     <div class="col-3">
       <label for="offer-end">Data di fine</label>
-      <input type="date" class="form-control" id="offer-end" th:field="*{endDate}"
+      <input type="date" class="form-control" id="offer-end" name="endDate" th:value="${offer.endDate}"
              th:errorClass="is-invalid">
       <div th:if="${#fields.hasErrors('endDate')}" class="invalid-feedback">
         <div th:each="error : ${#fields.errors('endDate')}" th:text="${error}"></div>
@@ -39,6 +39,7 @@
     </div>
     <div class="my-3">
 <button class="btn btn-outline-secondary" type="submit">Invia</button>
+      <a href="/" class="btn btn-outline-secondary">Torna alla home</a>
     </div>
   </form>
 </div>
