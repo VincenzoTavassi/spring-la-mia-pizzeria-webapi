@@ -11,6 +11,7 @@ import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,6 +34,7 @@ public class OfferController {
         if(foundPizza.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         Offer offer = new Offer();
         offer.setStartDate(LocalDate.now());
+        offer.setEndDate(LocalDate.now().plusDays(1));
         offer.setPizza(foundPizza.get());
         model.addAttribute("offer", offer);
         return "offer/form";
@@ -42,6 +44,7 @@ public class OfferController {
     @PostMapping("/create")
     public String doCreate(@Valid @ModelAttribute("offer") Offer formOffer,
                            BindingResult bindingResult) {
+        if (formOffer.getEndDate().isBefore(formOffer.getStartDate())) bindingResult.addError(new FieldError("offer", "endDate", formOffer.getEndDate(), false, null, null, "La data di fine offerta deve essere superiore a quella iniziale"));
         if (bindingResult.hasErrors()) return "/offer/form";
         offerRepository.save(formOffer);
         // redirect
@@ -65,6 +68,7 @@ public class OfferController {
         // verifico che esiste
         Optional<Offer> foundOffer = offerRepository.findById(id);
         if (foundOffer.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (offer.getEndDate().isBefore(offer.getStartDate())) bindingResult.addError(new FieldError("offer", "endDate", offer.getEndDate(), false, null, null, "La data di fine offerta deve essere superiore a quella iniziale"));
         if (bindingResult.hasErrors()) return "/offer/form";
         // setto l'id
         offer.setId(id);

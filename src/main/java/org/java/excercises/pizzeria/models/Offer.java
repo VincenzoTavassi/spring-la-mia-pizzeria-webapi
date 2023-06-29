@@ -2,6 +2,7 @@ package org.java.excercises.pizzeria.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -15,10 +16,10 @@ public class Offer {
     @NotBlank
     private String title;
     @NotNull
-    @Future
+    @FutureOrPresent
     private LocalDate startDate;
     @NotNull
-    @Future
+    @FutureOrPresent
     private LocalDate endDate;
     @ManyToOne
     @JoinColumn(nullable = false)
