@@ -36,6 +36,9 @@
         </tr>
         </tbody>
     </table>
+    <div class="alert alert-info" th:unless="${pizza.offers.size() > 0}">
+        Non sono presenti offerte.
+    </div>
 </div>
 
 </body>

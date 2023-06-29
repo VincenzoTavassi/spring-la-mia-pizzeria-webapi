@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/resources :: head(title = ${offer.pizza.name})}">
+<body>
+<div class="container text-center d-flex flex-column justify-content-center align-items-center">
+  <h1>Offerta per la pizza <span th:text="${offer.pizza.name}"></span></h1>
+  <form
+          th:action="|/offers/create|"
+          method="POST"
+          class="row my-3 justify-content-center align-items-center"
+          th:object="${offer}"
+
+  >
+    <input type="hidden" th:field="*{pizza}">
+    <div class="col-3">
+      <label for="offer-title">Nome dell'Offerta</label>
+      <input type="text" class="form-control" id="offer-title" th:field="*{title}"
+             th:errorClass="is-invalid">
+      <div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+        <div th:each="error : ${#fields.errors('title')}" th:text="${error}"></div>
+      </div>
+    </div>
+    <div class="col-3">
+      <label for="offer-start">Data di inizio</label>
+      <input type="date" class="form-control" id="offer-start" th:field="*{startDate}"
+             th:errorClass="is-invalid">
+      <div th:if="${#fields.hasErrors('startDate')}" class="invalid-feedback">
+        <div th:each="error : ${#fields.errors('startDate')}" th:text="${error}"></div>
+      </div>
+    </div>
+    <div class="col-3">
+      <label for="offer-end">Data di fine</label>
+      <input type="date" class="form-control" id="offer-end" th:field="*{endDate}"
+             th:errorClass="is-invalid">
+      <div th:if="${#fields.hasErrors('endDate')}" class="invalid-feedback">
+        <div th:each="error : ${#fields.errors('endDate')}" th:text="${error}"></div>
+      </div>
+    </div>
+    <div class="my-3">
+<button class="btn btn-outline-secondary" type="submit">Invia</button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>
