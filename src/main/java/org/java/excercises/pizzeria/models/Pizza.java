@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Pizza {
@@ -25,9 +27,9 @@ public class Pizza {
     @Column(nullable = false)
 
     private BigDecimal price;
-
     private LocalDateTime createdAt;
-
+@OneToMany(mappedBy = "pizza", cascade = {CascadeType.REMOVE})
+    private List<Offer> offers = new ArrayList<>();
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
