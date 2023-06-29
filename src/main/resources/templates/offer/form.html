@@ -5,7 +5,8 @@
 <div class="container text-center d-flex flex-column justify-content-center align-items-center">
   <h1>Offerta per la pizza <span th:text="${offer.pizza.name}"></span></h1>
   <form
-          th:action="|/offers/create|"
+          th:with="formAction=${offer.id != null ? '/offers/edit/'+ offer.id : '/offers/create'}"
+          th:action="@{${formAction}}"
           method="POST"
           class="row my-3 justify-content-center align-items-center"
           th:object="${offer}"

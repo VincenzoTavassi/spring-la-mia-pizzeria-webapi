@@ -18,21 +18,36 @@
         <a href="/" class="card-link">Torna alla lista</a>
     </div>
 </div>
+        <div class="my-3">
+            <a th:href="@{/offers/create(pizzaId=${pizza.id})}" class="btn btn-outline-secondary">Crea un'offerta</a>
+        </div>
     <table class="table" th:if="${pizza.offers.size() > 0}">
         <thead>
         <tr>
             <th>Nome Offerta</th>
             <th>Data di inizio</th>
             <th>Data di fine</th>
-            <th></th>
+            <th>Azioni</th>
         </tr>
         </thead>
         <tbody>
+
         <tr th:each="offer : ${pizza.offers}" th:object="${offer}">
             <td th:text="*{title}"></td>
             <td th:text="*{#temporals.format(startDate, 'dd/MM/yyyy')}"></td>
             <td th:text="*{#temporals.format(endDate, 'dd/MM/yyyy')}"></td>
-
+            <td>
+                <a class="btn btn-outline-secondary mx-2" th:href="@{|/offers/edit/*{id}|}">Modifica</a>
+                <form
+                        th:action="@{|/offers/delete/*{id}|}"
+                        method="post"
+                        class="d-inline-block"
+                >
+                    <button class="btn btn-outline-secondary mx-2" type="submit"><i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </form>
+            </td>
+            </td>
         </tr>
         </tbody>
     </table>

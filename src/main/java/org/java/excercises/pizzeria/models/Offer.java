@@ -1,6 +1,7 @@
 package org.java.excercises.pizzeria.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,8 +15,10 @@ public class Offer {
     @NotBlank
     private String title;
     @NotNull
+    @Future
     private LocalDate startDate;
     @NotNull
+    @Future
     private LocalDate endDate;
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -51,5 +54,13 @@ public class Offer {
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }
