@@ -5,4 +5,14 @@ INSERT INTO `pizza` (`id`, `price`, `description`, `name`, `picture_url`, `creat
 INSERT INTO `pizza` (`id`, `price`, `description`, `name`, `picture_url`, `created_at`) VALUES (NULL, '15.50', 'pomodoro, mozzarella e salame piccante', 'Diavola', 'https://wips.plug.it/cips/buonissimo.org/cms/2012/05/69630013_m.jpg', '2020-11-11');
 INSERT INTO `offer` (`end_date`, `pizza_id`, `start_date`, `title`) VALUES ('2023-06-22', '1', '2023-06-30', 'nuova offerta');
 INSERT INTO `ingredient` (`name`) VALUES ('basilico');
+INSERT INTO `ingredient` (`name`) VALUES ('pomodoro');
+INSERT INTO `ingredient` (`name`) VALUES ('mozzarella');
+INSERT INTO `ingredient` (`name`) VALUES ('farina');
+INSERT INTO `ingredient` (`name`) VALUES ('olive');
+INSERT INTO `ingredient` (`name`) VALUES ('tonno');
+INSERT INTO `ingredient` (`name`) VALUES ('peperoncino');
+INSERT INTO `ingredient` (`name`) VALUES ('peperoni');
+INSERT INTO `ingredient` (`name`) VALUES ('melanzane');
+INSERT INTO `ingredient` (`name`) VALUES ('zucchine');
+INSERT INTO `ingredient` (`name`) VALUES ('salsiccia');
 INSERT INTO `pizza_ingredients` (`pizzas_id`, `ingredients_id`) VALUES ('1', '1');

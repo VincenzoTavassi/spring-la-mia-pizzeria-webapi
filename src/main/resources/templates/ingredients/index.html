@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/resources :: head(title ='Lista degli ingreidienti')}">
+</head>
+<body>
+<div th:each="ingredient : ${ingredients}">
+    <p th:text="${ingredient.name}"></p>
+</div>
+
+</body>
+</html>
