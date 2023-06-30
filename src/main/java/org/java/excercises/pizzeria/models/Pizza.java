@@ -85,9 +85,22 @@ public class Pizza {
         return offers;
     }
 
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
     public String getFormattedCreatedAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'alle' HH:mm");
         return createdAt.format(formatter);
+
 
 
     }

@@ -34,7 +34,15 @@
                 <div th:each="error : ${#fields.errors('price')}" th:text="${error}"></div>
             </div>
         </div>
-        <div class="col-10">
+        <div class="col-3">
+            <div class="form-check" th:each="ingredient : ${ingredients}">
+            <input class="form-check-input" type="checkbox" th:value="${ingredient.id}" th:id="|ingredient_${ingredient.id}|"
+                   th:field="*{ingredients}">
+            <label class="form-check-label" th:for="|ingredient_${ingredient.id}|" th:text="${ingredient.name}">
+            </label>
+        </div>
+        </div>
+        <div class="col-7">
             <label for="pizza-description">Descrizione</label>
             <textarea class="form-control" id="pizza-description" th:field="*{description}" th:errorClass="is-invalid"></textarea>
             <div th:if="${#fields.hasErrors('description')}" class="invalid-feedback">

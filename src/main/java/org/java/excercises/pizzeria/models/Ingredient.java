@@ -31,4 +31,12 @@ public class Ingredient {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public List<Pizza> getPizzas() {
+        return pizzas;
+    }
+
+    public void setPizzas(List<Pizza> pizzas) {
+        this.pizzas = pizzas;
+    }
 }

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.java.excercises.pizzeria.messages.Message;
 import org.java.excercises.pizzeria.messages.MessageType;
 import org.java.excercises.pizzeria.models.Pizza;
+import org.java.excercises.pizzeria.repository.IngredientRepository;
 import org.java.excercises.pizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,9 @@ public class PizzaController {
 
     @Autowired
     private PizzaRepository pizzaRepository;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
 
     // INDEX
@@ -63,6 +67,7 @@ public class PizzaController {
     @GetMapping("/pizza/create")
     public String create(Model model) {
         model.addAttribute("pizza", new Pizza());
+        model.addAttribute("ingredients", ingredientRepository.findAll());
         return "pizza/edit";
     }
 
@@ -89,6 +94,7 @@ public class PizzaController {
         Optional<Pizza> foundPizza = pizzaRepository.findById(id);
         if(foundPizza.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         model.addAttribute("pizza", foundPizza.get());
+        model.addAttribute("ingredients", ingredientRepository.findAll());
         return "pizza/edit";
     }
 
