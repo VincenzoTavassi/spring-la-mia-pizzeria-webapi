@@ -6,9 +6,9 @@
 <h1 class="text-center">Lista degli ingredienti</h1>
 <div class="container d-flex justify-content-center align-items-center">
     <div class="col-6">
-<div th:each="ingredient : ${ingredients}">
+<div>
     <ul class="list-group">
-        <li class="list-group-item">
+        <li class="list-group-item" th:each="ingredient : ${ingredients}">
             <div class="d-flex justify-content-between">
                 <form th:action="@{/ingredients/edit(ingredientId = ${ingredient.id})}" method="POST">
                 <input type="text" th:value="${ingredient.name}" name="name">
@@ -16,14 +16,21 @@
                 </form>
                 <div class="d-flex">
                 <form th:action="@{/ingredients/delete(ingredientId = ${ingredient.id})}" method="POST">
-<!--                @{/categories(edit=*{id})}"-->
                 <button class="btn btn-outline-secondary mx-3" type="submit">Elimina</button>
                 </form>
+                </div>
+            </div>
+            <div class="w-75 my-2" th:if="${message != null && ingredient.id == ingredientId}">
+                <div class="alert alert-success" role="alert" th:text="${message.message}">
                 </div>
             </div>
         </li>
         </ul>
     </div>
+            <div class="w-75 my-2" th:if="${message != null && ingredient.id == null}">
+                <div class="alert alert-success" role="alert" th:text="${message.message}">
+                </div>
+            </div>
         <div class="d-flex justify-content-center align-items-center my-3">
             <form th:action="@{/ingredients/add}" method="POST">
                 <label for="new_ingredient">Aggiungi un ingrediente:</label>

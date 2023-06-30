@@ -1,6 +1,8 @@
 package org.java.excercises.pizzeria.controllers;
 
 import jakarta.validation.Valid;
+import org.java.excercises.pizzeria.messages.Message;
+import org.java.excercises.pizzeria.messages.MessageType;
 import org.java.excercises.pizzeria.models.Ingredient;
 import org.java.excercises.pizzeria.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,9 +38,12 @@ public class IngredientController {
     public String create(
             Model model,
             @Valid @ModelAttribute Ingredient ingredientForm,
-            BindingResult bindingResult) {
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
         if (bindingResult.hasErrors()) return "/offer/form";
         ingredientRepository.save(ingredientForm);
+        redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Ingrediente aggiunto con successo."));
         return "redirect:/ingredients";
     }
 
@@ -45,13 +51,16 @@ public class IngredientController {
     public String update(
             @RequestParam("ingredientId") Integer id,
             @Valid @ModelAttribute("ingredient") Ingredient ingredientForm,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
     ) {
         Optional<Ingredient> ingredient = ingredientRepository.findById(id);
         if (ingredient.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         if (bindingResult.hasErrors()) return "ingredients/index";
         ingredientForm.setId(id);
         ingredientRepository.save(ingredientForm);
+        redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Ingrediente modificato con successo."));
+        redirectAttributes.addFlashAttribute("ingredientId", id);
         return "redirect:/ingredients";
 
     }

@@ -13,6 +13,7 @@
     <ul class="list-group list-group-flush">
         <li class="list-group-item" th:text="|€ ${pizza.price}|"></li>
         <li class="list-group-item" th:text="|Creata il ${pizza.getFormattedCreatedAt()}|"></li>
+        <li class="list-group-item">Ingredienti: <p><span th:each="ingredient : ${pizza.ingredients}" th:text="|${ingredient.name} |"></span></p></li>
     </ul>
     <div class="card-body">
         <a href="/" class="card-link">Torna alla lista</a>
