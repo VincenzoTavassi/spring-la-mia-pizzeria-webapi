@@ -10,11 +10,16 @@
     <ul class="list-group">
         <li class="list-group-item">
             <div class="d-flex justify-content-between">
-            <span th:text="${ingredient.name}"></span>
+                <form th:action="@{/ingredients/edit(ingredientId = ${ingredient.id})}" method="POST">
+                <input type="text" th:value="${ingredient.name}" name="name">
+                    <button class="btn btn-outline-secondary mx-3" type="submit">Modifica</button>
+                </form>
+                <div class="d-flex">
                 <form th:action="@{/ingredients/delete(ingredientId = ${ingredient.id})}" method="POST">
 <!--                @{/categories(edit=*{id})}"-->
-                <button type="submit">Elimina</button>
+                <button class="btn btn-outline-secondary mx-3" type="submit">Elimina</button>
                 </form>
+                </div>
             </div>
         </li>
         </ul>

@@ -1,12 +1,15 @@
 package org.java.excercises.pizzeria.controllers;
 
+import jakarta.validation.Valid;
 import org.java.excercises.pizzeria.models.Ingredient;
 import org.java.excercises.pizzeria.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,6 +28,21 @@ public class IngredientController {
         List<Ingredient> ingredients = ingredientRepository.findAll();
         model.addAttribute("ingredients", ingredients);
         return "ingredients/index";
+    }
+
+    @PostMapping("/ingredients/edit")
+    public String update(
+            @RequestParam("ingredientId") Integer id,
+            @Valid @ModelAttribute("ingredient") Ingredient ingredientForm,
+            BindingResult bindingResult
+    ) {
+        Optional<Ingredient> ingredient = ingredientRepository.findById(id);
+        if (ingredient.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (bindingResult.hasErrors()) return "ingredients/index";
+        ingredientForm.setId(id);
+        ingredientRepository.save(ingredientForm);
+        return "redirect:/ingredients";
+
     }
 
     @PostMapping("/ingredients/delete")
