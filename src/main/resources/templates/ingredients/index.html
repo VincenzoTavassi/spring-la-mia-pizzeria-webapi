@@ -1,10 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{/fragments/resources :: head(title ='Lista degli ingreidienti')}">
+<head th:insert="~{/fragments/resources :: head(title ='Lista degli ingredienti')}">
 </head>
 <body>
+<h1 class="text-center">Lista degli ingredienti</h1>
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="col-6">
 <div th:each="ingredient : ${ingredients}">
-    <p th:text="${ingredient.name}"></p>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between">
+            <span th:text="${ingredient.name}"></span>
+                <form th:action="@{/ingredients/delete(ingredientId = ${ingredient.id})}" method="POST">
+<!--                @{/categories(edit=*{id})}"-->
+                <button type="submit">Elimina</button>
+                </form>
+            </div>
+        </li>
+        </ul>
+    </div>
+    <div class="mt-3 text-center">
+        <a href="/">Torna alla home</a>
+    </div>
+</div>
 </div>
 
 </body>
