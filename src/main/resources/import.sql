@@ -4,3 +4,5 @@ INSERT INTO `pizza` (`id`, `price`, `description`, `name`, `picture_url`, `creat
 INSERT INTO `pizza` (`id`, `price`, `description`, `name`, `picture_url`, `created_at`) VALUES (NULL, '14.50', 'pomodoro, mozzarella e funghi champignon', 'Funghi', 'https://i1.wp.com/www.piccolericette.net/piccolericette/wp-content/uploads/2019/10/4102_Pizza.jpg?resize=895%2C616&ssl=1', '2021-11-11');
 INSERT INTO `pizza` (`id`, `price`, `description`, `name`, `picture_url`, `created_at`) VALUES (NULL, '15.50', 'pomodoro, mozzarella e salame piccante', 'Diavola', 'https://wips.plug.it/cips/buonissimo.org/cms/2012/05/69630013_m.jpg', '2020-11-11');
 INSERT INTO `offer` (`end_date`, `pizza_id`, `start_date`, `title`) VALUES ('2023-06-22', '1', '2023-06-30', 'nuova offerta');
+INSERT INTO `ingredient` (`name`) VALUES ('basilico');
+INSERT INTO `pizza_ingredients` (`pizzas_id`, `ingredients_id`) VALUES ('1', '1');

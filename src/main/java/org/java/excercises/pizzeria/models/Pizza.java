@@ -28,8 +28,11 @@ public class Pizza {
 
     private BigDecimal price;
     private LocalDateTime createdAt;
-@OneToMany(mappedBy = "pizza", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "pizza", cascade = {CascadeType.REMOVE})
     private List<Offer> offers = new ArrayList<>();
+
+    @ManyToMany
+    private List<Ingredient> ingredients = new ArrayList<>();
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
