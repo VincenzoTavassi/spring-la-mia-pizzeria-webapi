@@ -27,7 +27,18 @@ public class IngredientController {
     public String index(Model model) {
         List<Ingredient> ingredients = ingredientRepository.findAll();
         model.addAttribute("ingredients", ingredients);
+        model.addAttribute("ingredient", new Ingredient());
         return "ingredients/index";
+    }
+
+    @PostMapping("/ingredients/add")
+    public String create(
+            Model model,
+            @Valid @ModelAttribute Ingredient ingredientForm,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return "/offer/form";
+        ingredientRepository.save(ingredientForm);
+        return "redirect:/ingredients";
     }
 
     @PostMapping("/ingredients/edit")
