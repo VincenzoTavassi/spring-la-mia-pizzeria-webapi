@@ -16,3 +16,10 @@ INSERT INTO `ingredient` (`name`) VALUES ('melanzane');
 INSERT INTO `ingredient` (`name`) VALUES ('zucchine');
 INSERT INTO `ingredient` (`name`) VALUES ('salsiccia');
 INSERT INTO `pizza_ingredients` (`pizzas_id`, `ingredients_id`) VALUES ('1', '1');
+
+INSERT INTO roles (id, name) VALUES(1,'ADMIN');
+INSERT INTO roles (id, name) VALUES(2,'USER');
+INSERT INTO users (id, email, name, lastname, password) VALUES(1, 'admin@pizzeria.com', 'Admin', 'Admin', '{noop}admin');
+INSERT INTO users (id, email, name, lastname, password) VALUES(2, 'user@pizzeria.com', 'Max', 'User', '{noop}user');
+INSERT INTO users_roles (roles_id, user_id) VALUES(1, 1);
+INSERT INTO users_roles (roles_id, user_id) VALUES(2, 2);

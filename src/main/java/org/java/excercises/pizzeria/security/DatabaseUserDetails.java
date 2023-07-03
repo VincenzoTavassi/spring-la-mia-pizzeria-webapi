@@ -58,6 +58,6 @@ public class DatabaseUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
