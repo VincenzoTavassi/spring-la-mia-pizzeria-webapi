@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:insert="~{/fragments/resources :: head(title = ${pizza.getName()})}">
 <body>
 <div class="container text-center d-flex flex-column justify-content-center align-items-center">
@@ -19,7 +19,7 @@
         <a href="/" class="card-link">Torna alla lista</a>
     </div>
 </div>
-        <div class="my-3">
+        <div class="my-3" sec:authorize="hasAuthority('ADMIN')">
             <a th:href="@{/offers/create(pizzaId=${pizza.id})}" class="btn btn-outline-secondary">Crea un'offerta</a>
         </div>
     <table class="table" th:if="${pizza.offers.size() > 0}">
@@ -28,7 +28,7 @@
             <th>Nome Offerta</th>
             <th>Data di inizio</th>
             <th>Data di fine</th>
-            <th>Azioni</th>
+            <th sec:authorize="hasAuthority('ADMIN')">Azioni</th>
         </tr>
         </thead>
         <tbody>
@@ -37,7 +37,7 @@
             <td th:text="*{title}"></td>
             <td th:text="*{#temporals.format(startDate, 'dd/MM/yyyy')}"></td>
             <td th:text="*{#temporals.format(endDate, 'dd/MM/yyyy')}"></td>
-            <td>
+            <td sec:authorize="hasAuthority('ADMIN')">
                 <a class="btn btn-outline-secondary mx-2" th:href="@{|/offers/edit/*{id}|}">Modifica</a>
                 <form
                         th:action="@{|/offers/delete/*{id}|}"

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:insert="~{/fragments/resources :: head(title ='Lista delle Pizze')}">
 </head>
 <body>
@@ -12,8 +12,8 @@
     <hr>
     <div class="row justify-content-between">
         <div class="col text-start">
-            <a th:href="@{/pizza/create}" class="btn btn-outline-secondary">Crea una pizza</a>
-            <a th:href="@{/ingredients}" class="btn btn-outline-secondary">Vai agli ingredienti</a>
+            <a th:href="@{/pizza/create}" class="btn btn-outline-secondary" sec:authorize="hasAuthority('ADMIN')">Crea una pizza</a>
+            <a th:href="@{/ingredients}" class="btn btn-outline-secondary" sec:authorize="hasAuthority('ADMIN')">Vai agli ingredienti</a>
             <a th:href="@{/login?logout}" class="btn btn-outline-secondary">Esci</a>
         </div>
         <div class="col">
@@ -50,8 +50,8 @@
             <td th:text="${pizza.description}">Otto</td>
             <td th:text="|€ ${pizza.price}|"></td>
             <td><a th:href="|/pizza/${pizza.id}|"><i class="fa-solid fa-eye"></i></a>
-            <a th:href="|/pizza/edit/${pizza.id}|"><i class="fa-solid fa-pencil"></i></a>
-                <form class="d-inline-block" th:action="|/pizza/delete/${pizza.id}|" method="POST"><button class="border-0 text-primary bg-transparent" type="submit"><i class="fa-solid fa-trash"></i></button></form>
+            <a sec:authorize="hasAuthority('ADMIN')" th:href="|/pizza/edit/${pizza.id}|"><i class="fa-solid fa-pencil"></i></a>
+                <form sec:authorize="hasAuthority('ADMIN')" class="d-inline-block" th:action="|/pizza/delete/${pizza.id}|" method="POST"><button class="border-0 text-primary bg-transparent" type="submit"><i class="fa-solid fa-trash"></i></button></form>
             </td>
         </tr>
         </tbody>
