@@ -32,7 +32,7 @@ public class PizzaController {
 
 
     // INDEX
-    @GetMapping
+    @GetMapping("/pizza")
     public String index(@RequestParam(name="search", required = false) String searchTerm, Model model) {
         List<Pizza> pizze;
         if (searchTerm == null || searchTerm.isBlank()) {

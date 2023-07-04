@@ -1,5 +1,7 @@
 package org.java.excercises.pizzeria.api;
 
+import jakarta.validation.Valid;
+import org.java.excercises.pizzeria.exceptions.NotUniqueNameException;
 import org.java.excercises.pizzeria.exceptions.PizzaNotFoundException;
 import org.java.excercises.pizzeria.models.Pizza;
 import org.java.excercises.pizzeria.service.PizzaService;
@@ -25,7 +27,7 @@ public class PizzaRestController {
     }
 
     @GetMapping("/{id}")
-public Pizza show(@PathVariable Integer id) {
+    public Pizza show(@PathVariable Integer id) {
         try {
             return pizzaService.getById(id);
         } catch (PizzaNotFoundException e) {
@@ -33,5 +35,22 @@ public Pizza show(@PathVariable Integer id) {
     }
     }
 
+    @PostMapping("/create")
+    public Pizza create(@Valid @RequestBody Pizza pizza) {
+        try {
+            return pizzaService.create(pizza);
+        } catch (NotUniqueNameException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public Pizza update(@Valid @RequestBody Pizza pizza, @PathVariable Integer id) {
+        try {
+            return pizzaService.update(id, pizza);
+        } catch (PizzaNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
 
 }

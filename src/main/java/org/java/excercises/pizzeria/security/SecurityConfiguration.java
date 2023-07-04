@@ -42,8 +42,8 @@ public class SecurityConfiguration {
                 .requestMatchers("offers/edit/**").hasAuthority("ADMIN")
                 .requestMatchers("offers/create/**").hasAuthority("ADMIN")
                 .requestMatchers("ingredients/**").hasAuthority("ADMIN")
-                .requestMatchers("/api/**").permitAll()
-                .requestMatchers("/**").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers("/pizza/**").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers("/**").permitAll()
                 .and().formLogin()
                 .and().logout();
         http.csrf().disable();
