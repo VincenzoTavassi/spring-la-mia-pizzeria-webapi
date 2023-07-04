@@ -59,6 +59,11 @@ public class PizzaService {
         return pizzaRepository.save(pizzaToSave);
     }
 
+    public void delete(Integer id) throws PizzaNotFoundException {
+        Optional<Pizza> foundPizza = pizzaRepository.findById(id);
+        if (foundPizza.isEmpty()) throw new PizzaNotFoundException("Pizza not found");
+        pizzaRepository.delete(foundPizza.get());
+    }
 
     private boolean isUniqueName(Pizza pizza) {
         Optional<Pizza> foundPizza = pizzaRepository.findByNameIgnoreCase(pizza.getName());

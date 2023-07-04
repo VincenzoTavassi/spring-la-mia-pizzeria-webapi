@@ -53,4 +53,13 @@ public class PizzaRestController {
         }
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Integer id) {
+        try {
+            pizzaService.delete(id);
+        } catch (PizzaNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
 }
