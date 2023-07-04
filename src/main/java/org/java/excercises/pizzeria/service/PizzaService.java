@@ -1,5 +1,6 @@
 package org.java.excercises.pizzeria.service;
 
+import org.java.excercises.pizzeria.exceptions.PizzaNotFoundException;
 import org.java.excercises.pizzeria.models.Pizza;
 import org.java.excercises.pizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,12 @@ public class PizzaService {
     public List<Pizza> getAll(@RequestParam Optional<String> keyword) {
         if (keyword.isPresent()) return pizzaRepository.findByNameContainingIgnoreCase(keyword.get());
         else return pizzaRepository.findAll();
+    }
+
+    // Ottieni la pizza in base all'id
+    public Pizza getById(Integer id) {
+        Optional<Pizza> foundPizza = pizzaRepository.findById(id);
+        if (foundPizza.isPresent()) return foundPizza.get();
+        else throw new PizzaNotFoundException("Pizza not found");
     }
 }
