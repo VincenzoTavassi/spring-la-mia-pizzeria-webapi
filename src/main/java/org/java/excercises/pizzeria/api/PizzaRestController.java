@@ -6,10 +6,13 @@ import org.java.excercises.pizzeria.exceptions.PizzaNotFoundException;
 import org.java.excercises.pizzeria.models.Pizza;
 import org.java.excercises.pizzeria.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +25,12 @@ public class PizzaRestController {
     PizzaService pizzaService;
 
     @GetMapping
-    public List<Pizza> index(@RequestParam Optional<String> keyword) {
-        return pizzaService.getAll(keyword);
+    public Page<Pizza> index(
+            @RequestParam Optional<String> keyword,
+            @RequestParam(defaultValue = "2") Integer size,
+            @RequestParam(defaultValue = "0") Integer page
+    ) {
+    return pizzaService.getAll(keyword, size, page);
     }
 
     @GetMapping("/{id}")

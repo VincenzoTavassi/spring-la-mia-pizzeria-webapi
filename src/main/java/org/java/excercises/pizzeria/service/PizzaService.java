@@ -6,8 +6,10 @@ import org.java.excercises.pizzeria.exceptions.PizzaNotFoundException;
 import org.java.excercises.pizzeria.models.Pizza;
 import org.java.excercises.pizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,9 +22,10 @@ public class PizzaService {
     PizzaRepository pizzaRepository;
 
     // Metodo di get per tutte le pizze che può avere o meno un search term
-    public List<Pizza> getAll(@RequestParam Optional<String> keyword) {
-        if (keyword.isPresent()) return pizzaRepository.findByNameContainingIgnoreCase(keyword.get());
-        else return pizzaRepository.findAll();
+    public Page<Pizza> getAll(Optional<String> keyword, Integer size, Integer page) {
+        Pageable pageable = PageRequest.of(page, size); // Creo un pageable con i parametri passati dal controller
+        if (keyword.isPresent()) return pizzaRepository.findByNameContainingIgnoreCase(keyword.get(), pageable);
+        return pizzaRepository.findAll(pageable);
     }
 
     // Ottieni la pizza in base all'id
