@@ -1,5 +1,6 @@
 package org.java.excercises.pizzeria.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -13,6 +14,7 @@ public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @JsonIgnore
     @ManyToMany(mappedBy = "ingredients")
     private List<Pizza> pizzas = new ArrayList<>();
 

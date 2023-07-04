@@ -1,5 +1,6 @@
 package org.java.excercises.pizzeria.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -21,6 +22,7 @@ public class Offer {
     @NotNull
     @FutureOrPresent
     private LocalDate endDate;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(nullable = false)
     private Pizza pizza;

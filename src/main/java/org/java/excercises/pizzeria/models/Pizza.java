@@ -1,5 +1,6 @@
 package org.java.excercises.pizzeria.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -96,7 +97,7 @@ public class Pizza {
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
-
+@JsonIgnore
     public String getFormattedCreatedAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'alle' HH:mm");
         return createdAt.format(formatter);
