@@ -50,7 +50,8 @@
                 <div th:each="error : ${#fields.errors('description')}" th:text="${error}"></div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 text-center">
+            <img th:src="@{|/files/${pizza.id}|}" class="img-fluid d-inline-block my-3" alt="immagine pizza">
         <div class="input-group mb-3">
             <input type="file" class="form-control" id="imageFile" th:field="*{imageFile}">
             <label class="input-group-text" for="imageFile">Immagine</label>

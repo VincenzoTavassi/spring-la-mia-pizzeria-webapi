@@ -16,7 +16,7 @@
         <li class="list-group-item">Ingredienti: <p><span th:each="ingredient : ${pizza.ingredients}" th:text="|${ingredient.name} |"></span></p></li>
     </ul>
     <div class="card-body">
-        <a href="/" class="card-link">Torna alla lista</a>
+        <a href="/pizza" class="card-link">Torna alla lista</a>
     </div>
 </div>
         <div class="my-3" sec:authorize="hasAuthority('ADMIN')">
