@@ -8,6 +8,7 @@ import org.java.excercises.pizzeria.models.Ingredient;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class PizzaForm {
     private String description;
     private MultipartFile imageFile;
     private String pictureUrl;
+
+    private LocalDateTime createdAt;
     @NotNull
     @DecimalMin("0")
     private BigDecimal price;
@@ -79,5 +82,13 @@ public class PizzaForm {
 
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

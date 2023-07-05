@@ -52,15 +52,8 @@ public class PizzaService {
         return pizzaRepository.save(pizzaToSave);
     }
 
-    public Pizza create(PizzaForm pizzaForm) {
-        Pizza pizzaToSave = new Pizza();
-        pizzaToSave.setName(pizzaForm.getName());
-        pizzaToSave.setPrice(pizzaForm.getPrice());
-        pizzaToSave.setDescription(pizzaForm.getDescription());
-        pizzaToSave.setIngredients(pizzaForm.getIngredients());
-        pizzaToSave.setPictureUrl(pizzaForm.getPictureUrl());
-        // Invoco il metodo custom per conversione in bytes array
-        pizzaToSave.setDBimage(multipartFileToByteArray(pizzaForm.getImageFile()));
+    public Pizza create(PizzaForm pizzaForm) throws NotUniqueNameException {
+        Pizza pizzaToSave = fromPizzaFormToPizza(pizzaForm);
         return create(pizzaToSave);
     }
 
@@ -78,6 +71,19 @@ public class PizzaService {
         return pizzaRepository.save(pizzaToSave);
     }
 
+    public Pizza update(PizzaForm pizza) throws PizzaNotFoundException {
+        Pizza pizzaToSave = fromPizzaFormToPizza(pizza);
+        Pizza pizzaDB = getById(pizza.getId());
+        if(!pizzaDB.getName().equalsIgnoreCase(pizzaToSave.getName()) && !isUniqueName(pizzaToSave)) throw new NotUniqueNameException("Il nome della pizza deve essere unico");
+        pizzaDB.setName(pizzaToSave.getName());
+        pizzaDB.setPictureUrl(pizzaToSave.getPictureUrl());
+        pizzaDB.setDBimage(pizzaToSave.getDBimage());
+        pizzaDB.setDescription(pizzaToSave.getDescription());
+        pizzaDB.setIngredients(pizzaToSave.getIngredients());
+        pizzaDB.setPrice(pizzaToSave.getPrice());
+        return pizzaRepository.save(pizzaDB);
+    }
+
     public void delete(Integer id) throws PizzaNotFoundException {
         Optional<Pizza> foundPizza = pizzaRepository.findById(id);
         if (foundPizza.isEmpty()) throw new PizzaNotFoundException("Pizza not found");
@@ -85,6 +91,31 @@ public class PizzaService {
     }
 
     // Metodi CUSTOM
+
+    // Metodo per trasformare una Pizza in DTO PizzaForm
+    public PizzaForm fromPizzaToPizzaForm(Pizza pizza) {
+        PizzaForm pizzaForm = new PizzaForm();
+        pizzaForm.setId(pizza.getId());
+        pizzaForm.setCreatedAt(pizza.getCreatedAt());
+        pizzaForm.setName(pizza.getName());
+        pizzaForm.setDescription(pizza.getDescription());
+        pizzaForm.setPrice(pizza.getPrice());
+        pizzaForm.setIngredients(pizza.getIngredients());
+        pizzaForm.setPictureUrl(pizza.getPictureUrl());
+        return pizzaForm;
+    }
+
+    public Pizza fromPizzaFormToPizza(PizzaForm pizzaForm) {
+        Pizza pizzaToSave = new Pizza();
+        pizzaToSave.setName(pizzaForm.getName());
+        pizzaToSave.setPrice(pizzaForm.getPrice());
+        pizzaToSave.setDescription(pizzaForm.getDescription());
+        pizzaToSave.setIngredients(pizzaForm.getIngredients());
+        pizzaToSave.setPictureUrl(pizzaForm.getPictureUrl());
+        // Invoco il metodo custom per conversione in bytes array
+        pizzaToSave.setDBimage(multipartFileToByteArray(pizzaForm.getImageFile()));
+        return pizzaToSave;
+    }
     private boolean isUniqueName(Pizza pizza) {
         Optional<Pizza> foundPizza = pizzaRepository.findByNameIgnoreCase(pizza.getName());
         return foundPizza.isEmpty();

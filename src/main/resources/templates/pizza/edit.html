@@ -50,13 +50,15 @@
                 <div th:each="error : ${#fields.errors('description')}" th:text="${error}"></div>
             </div>
         </div>
+        <div class="col-4">
         <div class="input-group mb-3">
             <input type="file" class="form-control" id="imageFile" th:field="*{imageFile}">
             <label class="input-group-text" for="imageFile">Immagine</label>
         </div>
+        </div>
         <div class="d-flex justify-content-center align-items-center my-3">
             <button class="btn btn-outline-secondary me-3" type="submit">Invia</button>
-            <a class="btn btn-outline-secondary" href="/">Torna alla Home</a>
+            <a class="btn btn-outline-secondary" href="/pizza">Torna alla Home</a>
         </div>
     </form>
 </div>

@@ -2,6 +2,8 @@ package org.java.excercises.pizzeria.controllers;
 
 import jakarta.validation.Valid;
 import org.java.excercises.pizzeria.dto.PizzaForm;
+import org.java.excercises.pizzeria.exceptions.NotUniqueNameException;
+import org.java.excercises.pizzeria.exceptions.PizzaNotFoundException;
 import org.java.excercises.pizzeria.messages.Message;
 import org.java.excercises.pizzeria.messages.MessageType;
 import org.java.excercises.pizzeria.models.Pizza;
@@ -80,43 +82,31 @@ public class PizzaController {
     public String create(
             @Valid @ModelAttribute("pizza") PizzaForm pizza,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            Model model
     ) {
-        // Se il nome della pizza non è unico, aggiungo un errore
-//        if(!isUniqueName(pizza)) bindingResult.addError(new FieldError("pizza", "name", pizza.getName(), false, null, null, "Il nome della pizza deve essere unico"));
-        if(bindingResult.hasErrors()) return "pizza/edit";
-        else {
-//            pizza.setCreatedAt(LocalDateTime.now());
-            pizzaService.create(pizza);
+        if(!bindingResult.hasErrors()) {
+            try {
+                pizzaService.create(pizza);
+            } catch (NotUniqueNameException e) {
+                bindingResult.addError(new FieldError("pizza", "name", pizza.getName(), false, null, null,
+                        "Il nome deve essere unico"));
+            }
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("ingredients", ingredientRepository.findAll());
+            return "pizza/edit";}
+
             redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Pizza creata con successo."));
             return "redirect:/pizza";
         }
-    }
 
-
-//    @PostMapping("/pizza/create")
-//    public String create(
-//            @Valid @ModelAttribute("pizza") Pizza pizza,
-//            BindingResult bindingResult,
-//            RedirectAttributes redirectAttributes
-//    ) {
-//        // Se il nome della pizza non è unico, aggiungo un errore
-//        if(!isUniqueName(pizza)) bindingResult.addError(new FieldError("pizza", "name", pizza.getName(), false, null, null, "Il nome della pizza deve essere unico"));
-//        if(bindingResult.hasErrors()) return "pizza/edit";
-//        else {
-//            pizza.setCreatedAt(LocalDateTime.now());
-//        pizzaRepository.save(pizza);
-//        redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Pizza creata con successo."));
-//        return "redirect:/";
-//        }
-//    }
-
-    // EDIT
     @GetMapping("/pizza/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
-        Optional<Pizza> foundPizza = pizzaRepository.findById(id);
-        if(foundPizza.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        model.addAttribute("pizza", foundPizza.get());
+        Pizza foundPizza = pizzaService.getById(id);
+        PizzaForm pizzaForm = pizzaService.fromPizzaToPizzaForm(foundPizza);
+        model.addAttribute("pizza", pizzaForm);
         model.addAttribute("ingredients", ingredientRepository.findAll());
         return "pizza/edit";
     }
@@ -124,20 +114,20 @@ public class PizzaController {
     @PostMapping("/pizza/edit/{id}")
     public String update(
             @PathVariable("id") Integer id,
-            @Valid @ModelAttribute("pizza") Pizza formPizza,
+            @Valid @ModelAttribute("pizza") PizzaForm formPizza,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
-        Optional<Pizza> foundPizza = pizzaRepository.findById(id);
-        if(foundPizza.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        // Se il nome della pizza non è uguale a quello già presente e non è unico, aggiungo un errore
-        if(!formPizza.getName().equalsIgnoreCase(foundPizza.get().getName()) && !isUniqueName(formPizza)) bindingResult.addError(new FieldError("pizza", "name", formPizza.getName(), false, null, null, "Il nome della pizza deve essere unico"));
+        Pizza foundPizza = pizzaService.getById(id);
         if(bindingResult.hasErrors()) return "pizza/edit";
         else {
-            formPizza.setCreatedAt(foundPizza.get().getCreatedAt());
-            pizzaRepository.save(formPizza);
+            try {
+            pizzaService.update(formPizza);
+            } catch (PizzaNotFoundException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
             redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Pizza modificata con successo."));
-            return "redirect:/";
+            return "redirect:/pizza";
         }
     }
 
