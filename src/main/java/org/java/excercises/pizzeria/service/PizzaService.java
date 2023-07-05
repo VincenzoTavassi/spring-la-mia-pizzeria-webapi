@@ -1,6 +1,7 @@
 package org.java.excercises.pizzeria.service;
 
 import jakarta.validation.Valid;
+import org.java.excercises.pizzeria.dto.PizzaForm;
 import org.java.excercises.pizzeria.exceptions.NotUniqueNameException;
 import org.java.excercises.pizzeria.exceptions.PizzaNotFoundException;
 import org.java.excercises.pizzeria.models.Pizza;
@@ -10,7 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +48,20 @@ public class PizzaService {
         pizzaToSave.setIngredients(pizza.getIngredients());
         pizzaToSave.setOffers(pizza.getOffers());
         pizzaToSave.setPictureUrl(pizza.getPictureUrl());
+        pizzaToSave.setDBimage(pizza.getDBimage());
         return pizzaRepository.save(pizzaToSave);
+    }
+
+    public Pizza create(PizzaForm pizzaForm) {
+        Pizza pizzaToSave = new Pizza();
+        pizzaToSave.setName(pizzaForm.getName());
+        pizzaToSave.setPrice(pizzaForm.getPrice());
+        pizzaToSave.setDescription(pizzaForm.getDescription());
+        pizzaToSave.setIngredients(pizzaForm.getIngredients());
+        pizzaToSave.setPictureUrl(pizzaForm.getPictureUrl());
+        // Invoco il metodo custom per conversione in bytes array
+        pizzaToSave.setDBimage(multipartFileToByteArray(pizzaForm.getImageFile()));
+        return create(pizzaToSave);
     }
 
     public Pizza update(Integer id, Pizza pizza) throws PizzaNotFoundException {
@@ -68,8 +84,22 @@ public class PizzaService {
         pizzaRepository.delete(foundPizza.get());
     }
 
+    // Metodi CUSTOM
     private boolean isUniqueName(Pizza pizza) {
         Optional<Pizza> foundPizza = pizzaRepository.findByNameIgnoreCase(pizza.getName());
         return foundPizza.isEmpty();
+    }
+
+    // Metodo per convertire un file multipart ricevuto da un form in un array di bytes
+    private byte[] multipartFileToByteArray(MultipartFile file) {
+        byte[] bytes = null;
+        if (file != null && !file.isEmpty()) {
+            try {
+                bytes = file.getBytes();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bytes;
     }
 }

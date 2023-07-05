@@ -32,6 +32,10 @@ public class Pizza {
     @OneToMany(mappedBy = "pizza", cascade = {CascadeType.REMOVE})
     private List<Offer> offers = new ArrayList<>();
 
+    @Lob
+    @Column(length = 16777215)
+    private byte[] DBimage;
+
     @ManyToMany
     private List<Ingredient> ingredients = new ArrayList<>();
     public LocalDateTime getCreatedAt() {
@@ -97,7 +101,16 @@ public class Pizza {
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
-@JsonIgnore
+
+    public byte[] getDBimage() {
+        return DBimage;
+    }
+
+    public void setDBimage(byte[] DBimage) {
+        this.DBimage = DBimage;
+    }
+
+    @JsonIgnore
     public String getFormattedCreatedAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'alle' HH:mm");
         return createdAt.format(formatter);
